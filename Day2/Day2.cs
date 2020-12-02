@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -8,46 +9,47 @@ namespace AdventOfCode2020
     {
         public void Run()
         {
-
-            var validPasswords = File
+            var passwordLines = File
                 .ReadAllLines("Day2\\input.txt")
-                .Select(x => new Password(x))
-                .Count(x => x.IsValid);
+                .ToList();
+
+            Part1(passwordLines);
 
             Console.WriteLine($"Number of valid passwords: {validPasswords}");
         }
 
-        private class Password
+        private void Part1(List<string> passwordLines)
         {
-            public Password(string input)
-            {
-                var passwordParts = input.Split(' ');
-                var occurrenceParts = passwordParts[0].Split('-');
+            var passwordParts = passwordLines.Split(' ');
+            var occurrenceParts = passwordParts[0].Split('-');
 
-                Value = passwordParts[2];
+            var policy = new MinMaxPolicy(
+                int.Parse(occurrenceParts[0]), 
+                int.Parse(occurrenceParts[1]), 
+                passwordParts[1][0]);
+            
 
-                Policy = new Policy(
-                    int.Parse(occurrenceParts[0]), 
-                    int.Parse(occurrenceParts[1]), 
-                    passwordParts[1][0]);
-            }
+        }
+    }
 
-            public string Value { get; }
-            public Policy Policy { get; }
 
-            public bool IsValid
-            {
-                get
-                {
-                    var numberOfPolicyCharOccurrences = Value.Count(x => x == Policy.Letter);
 
-                    return Policy.MinOccurrence <= numberOfPolicyCharOccurrences
-                        && numberOfPolicyCharOccurrences <= Policy.MaxOccurrence;
-                }
-            }
+    public class Password
+    {
+        public Password(string password, IPolicy policy)
+        {
+            Value = password
+
+            Policy = new Policy(
+                int.Parse(occurrenceParts[0]), 
+                int.Parse(occurrenceParts[1]), 
+                passwordParts[1][0]);
         }
 
-        
+        public string Value { get; }
+        public IPolicy Policy { get; }
+
+        public bool IsValid => Policy.IsValid(Value);
     }
 
     public interface IPolicy
