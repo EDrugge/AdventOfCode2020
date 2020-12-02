@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2020
+namespace AdventOfCode2020.Day1
 {
     public class Day1
     {
@@ -11,7 +11,7 @@ namespace AdventOfCode2020
         {
             var numbers = File
                 .ReadAllLines("Day1\\input.txt")
-                .Select(x => int.Parse(x))
+                .Select(int.Parse)
                 .ToList();
 
             Part1(numbers);
@@ -20,9 +20,9 @@ namespace AdventOfCode2020
 
         public void Part1(IList<int> numbers)
         {
-            for (int i = 0; i < numbers.Count(); i++)
+            for (var i = 0; i < numbers.Count; i++)
             {
-                for (int j = 0; j < numbers.Count(); j++)
+                for (var j = 0; j < numbers.Count; j++)
                 {
                     if (i == j)
                         continue;
@@ -43,14 +43,14 @@ namespace AdventOfCode2020
 
         public void Part2(IList<int> numbers)
         {
-            for (int i = 0; i < numbers.Count(); i++)
+            for (var i = 0; i < numbers.Count; i++)
             {
-                for (int j = 0; j < numbers.Count(); j++)
+                for (var j = 0; j < numbers.Count; j++)
                 {
                     if (j == i)
                         continue;
 
-                    for (int k = 0; k < numbers.Count(); k++)
+                    for (var k = 0; k < numbers.Count; k++)
                     {
                         if (k == i || k == j)
                             continue;

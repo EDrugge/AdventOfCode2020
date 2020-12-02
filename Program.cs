@@ -15,10 +15,10 @@ namespace AdventOfCode2020
             switch (args[0])
             {
                 case "1":
-                    new Day1().Run();
+                    new Day1.Day1().Run();
                     break;
                 case "2":
-                    new Day2().Run();
+                    new Day2.Day2().Run();
                     break;
                 default:
                     Console.WriteLine($"Day {args[0]} is not yet implemented!");

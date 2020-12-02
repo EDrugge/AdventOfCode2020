@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AdventOfCode2020
+namespace AdventOfCode2020.Day2
 {
     public class Day2
     {
@@ -14,68 +14,47 @@ namespace AdventOfCode2020
                 .ToList();
 
             Part1(passwordLines);
-
-            Console.WriteLine($"Number of valid passwords: {validPasswords}");
+            Part2(passwordLines);
         }
 
-        private void Part1(List<string> passwordLines)
+        private static void Part1(IEnumerable<string> passwordLines)
         {
-            var passwordParts = passwordLines.Split(' ');
-            var occurrenceParts = passwordParts[0].Split('-');
+            var passwords = new List<Password>();
 
-            var policy = new MinMaxPolicy(
-                int.Parse(occurrenceParts[0]), 
-                int.Parse(occurrenceParts[1]), 
-                passwordParts[1][0]);
-            
+            foreach (var line in passwordLines)
+            {
+                var passwordParts = line.Split(' ');
+                var occurrenceParts = passwordParts[0].Split('-');
 
-        }
-    }
+                var policy = new MinMaxPolicy(
+                    int.Parse(occurrenceParts[0]), 
+                    int.Parse(occurrenceParts[1]), 
+                    passwordParts[1][0]);
+                
+                passwords.Add(new Password(passwordParts[2], policy));
+            }
 
-
-
-    public class Password
-    {
-        public Password(string password, IPolicy policy)
-        {
-            Value = password
-
-            Policy = new Policy(
-                int.Parse(occurrenceParts[0]), 
-                int.Parse(occurrenceParts[1]), 
-                passwordParts[1][0]);
+            Console.WriteLine($"Part1 - Number of valid passwords: {passwords.Count(x => x.IsValid)}");
         }
 
-        public string Value { get; }
-        public IPolicy Policy { get; }
-
-        public bool IsValid => Policy.IsValid(Value);
-    }
-
-    public interface IPolicy
-    {
-        bool IsValid(string password);
-    }
-
-    public class MinMaxPolicy : IPolicy
-    {
-        public MinMaxPolicy(int minOccurrence, int maxOccurrence, char letter)
+        private static void Part2(IEnumerable<string> passwordLines)
         {
-            MinOccurrence = minOccurrence;
-            MaxOccurrence = maxOccurrence;
-            Letter = letter;
-        }
+            var passwords = new List<Password>();
 
-        public int MinOccurrence { get; }
-        public int MaxOccurrence { get; }
-        public char Letter { get; set; }
+            foreach (var line in passwordLines)
+            {
+                var passwordParts = line.Split(' ');
+                var occurrenceParts = passwordParts[0].Split('-');
 
-        public bool IsValid(string password)
-        {
-            var numberOfPolicyCharOccurrences = password.Count(x => x == Letter);
+                var policy = new OneOccurrencePolicy(
+                    int.Parse(occurrenceParts[0]) - 1,
+                    int.Parse(occurrenceParts[1]) - 1,
+                    passwordParts[1][0]);
 
-                return MinOccurrence <= numberOfPolicyCharOccurrences
-                    && numberOfPolicyCharOccurrences <= MaxOccurrence;
+                passwords.Add(new Password(passwordParts[2], policy));
+            }
+
+            Console.WriteLine($"Part2 - Number of valid passwords: {passwords.Count(x => x.IsValid)}");
         }
     }
 
