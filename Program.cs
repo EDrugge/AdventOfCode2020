@@ -20,6 +20,9 @@ namespace AdventOfCode2020
                 case "2":
                     new Day2.Day2().Run();
                     break;
+                case "3":
+	                new Day3.Day3().Run();
+	                break;
                 default:
                     Console.WriteLine($"Day {args[0]} is not yet implemented!");
                     break;
